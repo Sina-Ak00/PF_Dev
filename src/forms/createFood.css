@@ -1,0 +1,21 @@
+#form-button{
+    margin: 1rem;
+}
+.form-image{
+    margin: auto;
+    margin-left: 5rem;
+}
+.form-image img{
+    width: 10rem;
+    height: 15rem;
+}
+#form-texts{
+    width: 100%;
+    direction: rtl;
+}
+#form-texts-toman{
+    direction: ltr;
+}
+#confirm-btn{
+    margin:.5rem;
+}
