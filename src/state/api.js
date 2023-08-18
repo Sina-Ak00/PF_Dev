@@ -3,12 +3,20 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_BASE_URL }),
   reducerPath: "adminApi",
-  tagTypes: ["Foods", "Totals", "Category","Inventory"],
+  tagTypes: ["Foods", "Totals", "Category","Inventory","Upload"],
   endpoints: (build) => ({
     // getFoods: build.query({
     //   query: () => "food/allfoods",
     //   providesTags: ["Foods"],
     // }),
+    createUpload: build.mutation({
+      query: (newUpload) => ({
+        url: "/upload",
+        method: "POST",
+        body: newUpload,
+      }),
+      invalidatesTags: ['Upload'],
+    }),
     getFoods: build.query({
       query: () => "/foods",
       providesTags: ["Foods"],
@@ -130,4 +138,5 @@ export const {
   useCreateInventoryMutation,
   useUpdateInventoryMutation,
   useDeleteInventoryMutation,
+  useCreateUploadMutation,
 } = api;

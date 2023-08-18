@@ -13,6 +13,7 @@ import { useGetInventorysQuery, useGetCategorysQuery } from "../state/api.js";
 import { Form, useForm } from "../controls/useForm";
 
 import "./createFood.css";
+import ImageUploader from "../controls/ImageUploader";
 
 const initailValues = {
   id: 0,
@@ -55,7 +56,7 @@ const CreateFood = (props) => {
         ...recordForEdit,
       });
   }, [recordForEdit, setValues]);
-
+  console.log(values)
   return (
     <Form onSubmit={handleSubmit}>
       <Grid container className={classes.text}>
@@ -85,7 +86,7 @@ const CreateFood = (props) => {
             ),
           }}
         />
-        <TextField
+        {/* <TextField
           id="form-texts-toman"
           variant="outlined"
           value={values.FImage}
@@ -94,7 +95,10 @@ const CreateFood = (props) => {
           name="FImage"
           label="تصویر"
           style={{ borderRadius: "50", backgroundColor: "white" }}
-        />
+        /> */}
+        <Grid item xs={12}>
+          <ImageUploader values={values} setValues={setValues} />
+        </Grid>
         {/* <Select
           name="FType"
           label="دسته بندی"
@@ -112,8 +116,8 @@ const CreateFood = (props) => {
             onChange={handleInputChange}
           />
         )}
-        <Grid container spacing={3} style={{maxWidth: "99%",}}>
-          <Grid item xs={values.FInvTitle !== "هیچکدام" ? 6:12}>
+        <Grid container spacing={3} style={{ maxWidth: "99%" }}>
+          <Grid item xs={values.FInvTitle !== "هیچکدام" ? 6 : 12}>
             {inventory && (
               <InventorySelect
                 name="FInvTitle"
@@ -121,9 +125,7 @@ const CreateFood = (props) => {
                 hich
                 options={inventory}
                 value={
-                  values.FInvTitle === undefined
-                    ? "هیچکدام"
-                    : values.FInvTitle
+                  values.FInvTitle === undefined ? "هیچکدام" : values.FInvTitle
                 }
                 onChange={handleInputChange}
               />
@@ -151,7 +153,6 @@ const CreateFood = (props) => {
               />
             )}
           </Grid>
-
         </Grid>
         {/* <Grid item>
           <ImageUploader
