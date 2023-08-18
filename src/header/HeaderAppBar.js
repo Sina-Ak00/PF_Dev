@@ -9,6 +9,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { Grid, IconButton, SpeedDial, SpeedDialAction } from "@mui/material";
 import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
+import InventoryIcon from '@mui/icons-material/Inventory';
 import SellIcon from '@mui/icons-material/Sell';
 import { Link } from "react-router-dom";
 
@@ -20,6 +21,14 @@ const actions = [
       </IconButton>
     ),
     name: "Insert Food / ساخت غذا",
+  },
+  {
+    icon: (
+      <IconButton component={Link} to="InventoryTable">
+        <InventoryIcon />
+      </IconButton>
+    ),
+    name: "Inventory / انبارداری",
   },
   {
     icon: (

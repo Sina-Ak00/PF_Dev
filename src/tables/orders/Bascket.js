@@ -7,14 +7,19 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import ImportExportIcon from '@mui/icons-material/ImportExport';
-import * as TotalServices from "../../services/TotalServices";
+import ImportExportIcon from "@mui/icons-material/ImportExport";
+import {
+  useCreateTotalMutation,
+} from "../../state/api.js";
+// import * as TotalServices from "../../services/TotalServices";
 import moment from "jalali-moment";
 import Foods from "../menu/Foods";
 
 export default function Bascket(props) {
   const { anchor, anchorClick, cartItem, onAdd, onRemove, onReset } = props;
+  const [createTotal] = useCreateTotalMutation();
   const [turn, setTurn] = useState(1);
+  const [address, setAddress] = useState("");
   const itemsPrice = cartItem.reduce((a, c) => a + c.FPrice * c.qty, 0);
   // const taxPrice = itemsPrice * 0.09;
   // const shippingPrice = itemsPrice > 2000 ? 0 : 50;
@@ -23,26 +28,27 @@ export default function Bascket(props) {
     setTurn(Number(turn) + Number(1));
     const data = {
       id: 0,
-      foods:cartItem,
+      foods: cartItem,
       totalPrice: totalPrice,
       Date: moment().format("jYYYY/jM/jD HH:mm"),
     };
-    TotalServices.insertTotal(data);
+    createTotal(data);
+    // TotalServices.insertTotal(data);
     onReset();
   };
   return (
     <Grid container style={{ textAlign: "center", alignContent: "center" }}>
       <Typography variant="h2">Order</Typography>
       <IconButton
-            onClick={() => anchorClick()}
-            size="small"
-            color={anchor?"info":"error"}
-            style={{ backgroundColor: 'transparent' }}
-            disableRipple={false}
-            variant="raised"
-          >
-            <ImportExportIcon />
-          </IconButton>
+        onClick={() => anchorClick()}
+        size="small"
+        color={anchor ? "info" : "error"}
+        style={{ backgroundColor: "transparent" }}
+        disableRipple={false}
+        variant="raised"
+      >
+        <ImportExportIcon />
+      </IconButton>
       {cartItem?.length === 0 && (
         <Grid
           container
@@ -74,7 +80,7 @@ export default function Bascket(props) {
         </Grid>
       )}
       {cartItem &&
-        cartItem.map((item,index) => (
+        cartItem.map((item, index) => (
           <Grid
             container
             spacing={2}
@@ -96,25 +102,51 @@ export default function Bascket(props) {
             </Grid>
           </Grid>
         ))}
-      {cartItem.length !== 0 && (
-        <TextField
-          id="form-texts-toman"
-          variant="outlined"
-          value={turn}
-          onChange={(e) => setTurn(e.target.value)}
-          name="turn"
-          label="نوبت"
-          type="number"
-          inputProps={{ min: 0 }}
-          style={{ borderRadius: "50", backgroundColor: "white" }}
-        />
-      )}
+      <Grid
+        container
+        spacing={2}
+        style={{ marginLeft: "0.5rem", margin: "1rem" }}
+      >
+        {cartItem.length !== 0 && (
+          <Grid item md={4}>
+          <TextField
+            id="form-texts-toman"
+            variant="outlined"
+            value={turn}
+            onChange={(e) => setTurn(e.target.value)}
+            name="turn"
+            label="نوبت"
+            type="number"
+            inputProps={{ min: 0 }}
+            style={{ borderRadius: "50", backgroundColor: "white" }}
+          />
+          </Grid>
+        )}
+        {cartItem.length !== 0 && (
+          <Grid item md={4}>
+          <TextField
+            id="form-texts-toman"
+            variant="outlined"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            name="turn"
+            label="آدرس"
+            multiline
+            type="text"
+            rows={2}
+            inputProps={{ min: 0 }}
+            style={{ borderRadius: "50", backgroundColor: "white" }}
+          />
+          </Grid>
+        )}
+      </Grid>
       {cartItem.length !== 0 && (
         <div>
           <Foods
             cartItems={cartItem}
             totalPrice={totalPrice}
             turn={turn}
+            address={address}
             addTurn={addTurn}
             itemsPrice={itemsPrice}
           />

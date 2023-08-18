@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
 import { makeStyles } from "@mui/styles";
 import useTable from "../controls/useTable";
-import * as TotalServices from "../services/TotalServices";
+import { useGetTotalsQuery, useDeleteTotalMutation } from "../state/api.js";
+// import * as TotalServices from "../services/TotalServices";
 import {
   Button,
   InputAdornment,
@@ -41,12 +42,19 @@ const headCells = [
 
 export default function DailyPrice(props) {
   const classes = useStyles();
-  const [records, setRecords] = useState(TotalServices.getAllTotals());
+  const { data } = useGetTotalsQuery('totals');
+  const [deleteTotal] = useDeleteTotalMutation();
+  const [records, setRecords] = useState(data || []);
+  // const [records, setRecords] = useState(TotalServices.getAllTotals());
   const [filterFn, setFilterFn] = useState({
     fn: (item) => {
       return item;
     },
   });
+
+  React.useEffect(() => {
+    if (data) setRecords(data);
+  }, [data]);
 
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTable(records, headCells, filterFn);
@@ -61,12 +69,16 @@ export default function DailyPrice(props) {
   };
 
   const onDelete = (id) => {
-    TotalServices.deleteTotal(id);
-    setRecords(TotalServices.getAllTotals());
+    deleteTotal(id);
+    setRecords(data);
+    // TotalServices.deleteTotal(id);
+    // setRecords(TotalServices.getAllTotals());
   };
   const onRemoveAll = () => {
-    TotalServices.deleteAllTotal();
-    setRecords(TotalServices.getAllTotals());
+    data.forEach((d) => deleteTotal(d.id));
+    setRecords(data);
+    // TotalServices.deleteAllTotal();
+    // setRecords(TotalServices.getAllTotals());
   };
 
   return (
@@ -123,7 +135,10 @@ export default function DailyPrice(props) {
               <TableRow key={item.id}>
                 <TableCell className={classes.tableCell}>
                   {item.foods?.map((f) => (
-                    <Tooltip key={f.id} title={Number(f.FPrice) * Number(f.qty)}>
+                    <Tooltip
+                      key={f.id}
+                      title={Number(f.FPrice) * Number(f.qty)}
+                    >
                       <Chip
                         label={f.FName + "(" + f.qty + ")"}
                         style={{ marginRight: "5px", direction: "rtl" }}

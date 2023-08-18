@@ -5,6 +5,8 @@ import Foods from "./tables/menu/Foods";
 import DailyPrice from "./forms/DailyPrice";
 import AuthForTotal from "./forms/AuthForTotal";
 import Order from "./tables/orders/Orders";
+import CreateCategory from "./forms/createCategory";
+import InventoryTable from "./forms/InventoryTable";
 import * as Foodservices from "./services/FoodServices";
 import HeaderAppBar from "./header/HeaderAppBar";
 import Theme from "./controls/Theme";
@@ -20,6 +22,12 @@ function App() {
         <HeaderAppBar />
         <Route path="/createFood" exact>
           <Routes />
+        </Route>
+        <Route path="/inventoryTable" exact>
+          <InventoryTable />
+        </Route>
+        <Route path="/createCategory" exact>
+          <CreateCategory />
         </Route>
         <Route path="/order" exact>
           <Foods />

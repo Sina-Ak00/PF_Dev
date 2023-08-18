@@ -15,6 +15,7 @@ import Notification from "../controls/Notification";
 import ConfirmDialog from "../controls/ConfirmDialog";
 import {
   Button,
+  Chip,
   InputAdornment,
   TableBody,
   TableCell,
@@ -29,6 +30,7 @@ import {
   ImageNotSupported,
   Search,
 } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   pageContent: {
@@ -48,6 +50,7 @@ const headCells = [
   { id: "FName", label: "نام" },
   { id: "FPrice", label: "قیمت" },
   { id: "FImage", label: "تصویر", disableSorting: true },
+  { id: "FType", label: "دسته بندی" },
   { id: "Actions", label: "تنظیمات", disableSorting: true },
 ];
 
@@ -152,7 +155,19 @@ const FoodTable = (props) => {
               setOpenPopup(true);
               setRecordForEdit(null);
             }}
-            styls={{ position: "absolute", right: "10px" }}
+            styles={{ position: "absolute", right: "10px" }}
+          />
+          <CBtn
+            text="دسته بندی جدید"
+            variant="outlined"
+            startIcon={<AddCircleRounded />}
+            component={Link}
+            to="/createCategory"
+            styles={{
+              position: "absolute",
+              right: "10px",
+              marginRight: "100px",
+            }}
           />
         </Toolbar>
         <TblContainer>
@@ -182,6 +197,15 @@ const FoodTable = (props) => {
                     />
                   ) : (
                     <ImageNotSupported />
+                  )}
+                </TableCell>
+                <TableCell className={classes.tableCell}>
+                  {item.FType && (
+                    <Chip
+                      label={item.FType}
+                      color="primary"
+                      variant="outlined"
+                    />
                   )}
                 </TableCell>
                 <TableCell className={classes.tableCell} width={100}>

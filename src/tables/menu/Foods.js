@@ -78,12 +78,12 @@ const Foods = (props) => {
   return (
     <>
       <ReactToPrint
-        trigger={() => <Button text="پرینت"/>}
+        trigger={() => <Button text="پرینت" />}
         content={() => componentRef}
       />
       <div ref={(el) => (componentRef = el)} className={classes.ticket}>
         {/* <img href="https://www.vecteezy.com/free-vector/potato-logo" alt="Logo" /> */}
-        <p className={classes.centered}>Fries Factory</p>
+        <p className={classes.centered}>Sandwich Factory</p>
         <p className={classes.lefted} style={{ fontSize: "13px" }}>
           {moment().format("jYYYY/jM/jD HH:mm")}
         </p>
@@ -120,7 +120,7 @@ const Foods = (props) => {
                 {props.taxPrice?.toLocaleString(2)}
               </td>
             </tr> */}
-            <tr className={classes.total} style={{paddingTop:'5px'}}>
+            <tr className={classes.total} style={{ paddingTop: "5px" }}>
               <td className={classes.desc}>مبلغ پرداختی</td>
               <td className={classes.quantity}></td>
               <td className={classes.price}>
@@ -129,6 +129,7 @@ const Foods = (props) => {
             </tr>
           </tbody>
         </table>
+        {props.address && <p className={classes.righted}>آدرس:{props.address}</p>}
         <p className={classes.righted}>نوبت شما:{props.turn}</p>
         <p className={classes.centered}>غذای خوب نیاز به تبلیغ ندارد</p>
         <p className={classes.centered}>
