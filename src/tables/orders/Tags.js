@@ -1,12 +1,15 @@
 import React from "react";
 import AllInclusiveIcon from "@mui/icons-material/AllInclusive";
-import { FaHamburger, FaPizzaSlice } from "react-icons/fa/";
-import { GiFrenchFries, GiSaucepan, GiChicken } from "react-icons/gi/";
-import { RiVipLine, RiMistFill } from "react-icons/ri/";
-import { MdLocalDrink } from "react-icons/md/";
+// import { FaHamburger, FaPizzaSlice } from "react-icons/fa/";
+// import { GiFrenchFries, GiSaucepan, GiChicken } from "react-icons/gi/";
+// import { RiVipLine, RiMistFill } from "react-icons/ri/";
+// import { MdLocalDrink } from "react-icons/md/";
 import { Chip, Grid } from "@mui/material";
 
-export default function typeTags(props) {
+import { useGetCategorysQuery } from "../../state/api.js";
+
+export default function TypeTags(props) {
+  const { data: category } = useGetCategorysQuery();
   const { typeTag, setTypeTag } = props;
   return (
     <Grid container spacing={0.5}>
@@ -14,13 +17,24 @@ export default function typeTags(props) {
         <Chip
           icon={<AllInclusiveIcon />}
           label="همه"
-          color={typeTag === 8 ? "success" : "info"}
-          variant={typeTag === 8 ? "filled" : "outlined"}
+          color={typeTag === null ? "success" : "info"}
+          variant={typeTag === null ? "filled" : "outlined"}
           style={{ marginleft: "2px" }}
-          onClick={() => setTypeTag(8)}
+          onClick={() => setTypeTag(null)}
         />
       </Grid>
-      <Grid item>
+      {category?.map((c) => (
+        <Grid item key={c.id}>
+          <Chip
+            label={c.CName}
+            color={typeTag === c.CName ? "success" : "info"}
+            variant={typeTag === c.CName ? "filled" : "outlined"}
+            style={{ marginleft: "2px" }}
+            onClick={() => setTypeTag(c.CName)}
+          />
+        </Grid>
+      ))}
+      {/* <Grid item>
         <Chip
           icon={<RiVipLine />}
           color={typeTag === 4 ? "success" : "info"}
@@ -91,7 +105,7 @@ export default function typeTags(props) {
           variant={typeTag === 7 ? "filled" : "outlined"}
           onClick={() => setTypeTag(7)}
         />
-      </Grid>
+      </Grid> */}
     </Grid>
   );
 }

@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
 import { makeStyles } from "@mui/styles";
 import useTable from "../controls/useTable";
-import { useGetTotalsQuery, useDeleteTotalMutation } from "../state/api.js";
+import {
+  useGetTotalsQuery,
+  useDeleteTotalMutation,
+  useGetInventorysQuery,
+} from "../state/api.js";
 // import * as TotalServices from "../services/TotalServices";
 import {
   Button,
@@ -15,9 +19,12 @@ import {
   Toolbar,
   Tooltip,
   Chip,
+  ToggleButtonGroup,
+  ToggleButton,
 } from "@mui/material";
 import { DeleteOutline, Search } from "@mui/icons-material";
 import moment from "jalali-moment";
+import { InventoryTbl } from "./inventory/InventoryTbl";
 
 const useStyles = makeStyles((theme) => ({
   pageContent: {
@@ -42,9 +49,11 @@ const headCells = [
 
 export default function DailyPrice(props) {
   const classes = useStyles();
-  const { data } = useGetTotalsQuery('totals');
+  const { data } = useGetTotalsQuery("totals");
+  const { data: inventory } = useGetInventorysQuery("inventorys");
   const [deleteTotal] = useDeleteTotalMutation();
   const [records, setRecords] = useState(data || []);
+  const [table, setTable] = useState(true);
   // const [records, setRecords] = useState(TotalServices.getAllTotals());
   const [filterFn, setFilterFn] = useState({
     fn: (item) => {
@@ -89,87 +98,111 @@ export default function DailyPrice(props) {
         currentTableRef={tableRef.current}
       >
       </DownloadTableExcel> */}
-      <Paper sx={{ margin: "5rem" }}>
-        <Toolbar>
-          <TextField
-            style={{ direction: "rtl" }}
-            label="جستجو"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Search />
-                </InputAdornment>
-              ),
-            }}
-            onChange={handleSearch}
-          />
-          <ReactHTMLTableToExcel
-            style={{ position: "absolute", right: "10px", dir: "rtl" }}
-            id="test-table-xls-button"
-            className="download-table-xls-button"
-            table="table-to-xls"
-            filename={String(moment().format("jYYYY/jMM/jDD-HH:mm"))}
-            sheet="فروش تا این تاریخ"
-            buttonText="Excel"
-          />
-          {/* <Button
+
+      <ToggleButtonGroup
+        color="standard"
+        exclusive
+        style={{ alignItems: "center" }}
+        sx={{
+          margin: ".5rem",
+          alignItems: "center",
+          justifyContent: "center",
+          display: "flex",
+        }}
+        value={table}
+        onChange={(e, newTable) => setTable(newTable)}
+        aria-label="Platform"
+      >
+        <ToggleButton value={true}>جدول فروش روزانه</ToggleButton>
+        <ToggleButton value={false}>جدول انبار مصرفی</ToggleButton>
+      </ToggleButtonGroup>
+      {table === true ? (
+        <Paper sx={{ margin: "5rem" }}>
+          <Toolbar>
+            <TextField
+              style={{ direction: "rtl" }}
+              label="جستجو"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Search />
+                  </InputAdornment>
+                ),
+              }}
+              onChange={handleSearch}
+            />
+            <ReactHTMLTableToExcel
+              style={{ position: "absolute", right: "10px", dir: "rtl" }}
+              id="test-table-xls-button"
+              className="download-table-xls-button"
+              table="table-to-xls"
+              filename={String(moment().format("jYYYY/jMM/jDD-HH:mm"))}
+              sheet="فروش تا این تاریخ"
+              buttonText="Excel"
+            />
+            {/* <Button
             style={{ position: "absolute", right: "160px" }}
             variant="outlined"
           >
             Export Excel
           </Button> */}
-          <Button
-            style={{ position: "absolute", right: "10px" }}
-            variant="outlined"
-            color="error"
-            onClick={() => onRemoveAll()}
-          >
-            حذف رکوردها
-          </Button>
-        </Toolbar>
+            <Button
+              style={{ position: "absolute", right: "10px" }}
+              variant="outlined"
+              color="error"
+              onClick={() => onRemoveAll()}
+            >
+              حذف رکوردها
+            </Button>
+          </Toolbar>
 
-        <TblContainer id="table-to-xls">
-          <TblHead />
-          <TableBody>
-            {recordsAfterPagingAndSorting().map((item) => (
-              <TableRow key={item.id}>
-                <TableCell className={classes.tableCell}>
-                  {item.foods?.map((f) => (
-                    <Tooltip
-                      key={f.id}
-                      title={Number(f.FPrice) * Number(f.qty)}
-                    >
-                      <Chip
-                        label={f.FName + "(" + f.qty + ")"}
-                        style={{ marginRight: "5px", direction: "rtl" }}
-                      />
-                    </Tooltip>
-                  ))}
-                </TableCell>
-                <TableCell className={classes.tableCell}>
-                  {Number(item.totalPrice)}
-                </TableCell>
-                <TableCell className={classes.tableCell}>{item.Date}</TableCell>
-                <TableCell className={classes.tableCell}>
-                  <Button color="error" onClick={() => onDelete(item.id)}>
-                    <DeleteOutline />
-                  </Button>
+          <TblContainer id="table-to-xls">
+            <TblHead />
+            <TableBody>
+              {recordsAfterPagingAndSorting().map((item) => (
+                <TableRow key={item.id}>
+                  <TableCell className={classes.tableCell}>
+                    {item.foods?.map((f) => (
+                      <Tooltip
+                        key={f.id}
+                        title={Number(f.FPrice) * Number(f.qty)}
+                      >
+                        <Chip
+                          label={f.FName + "(" + f.qty + ")"}
+                          style={{ marginRight: "5px", direction: "rtl" }}
+                        />
+                      </Tooltip>
+                    ))}
+                  </TableCell>
+                  <TableCell className={classes.tableCell}>
+                    {Number(item.totalPrice)}
+                  </TableCell>
+                  <TableCell className={classes.tableCell}>
+                    {item.Date}
+                  </TableCell>
+                  <TableCell className={classes.tableCell}>
+                    <Button color="error" onClick={() => onDelete(item.id)}>
+                      <DeleteOutline />
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+              <TableRow>
+                <TableCell>مجموع فروش</TableCell>
+                <TableCell align="left">
+                  {recordsAfterPagingAndSorting().reduce(
+                    (a, item) => (a = a + item.totalPrice),
+                    0
+                  )}
                 </TableCell>
               </TableRow>
-            ))}
-            <TableRow>
-              <TableCell>مجموع فروش</TableCell>
-              <TableCell align="left">
-                {recordsAfterPagingAndSorting().reduce(
-                  (a, item) => (a = a + item.totalPrice),
-                  0
-                )}
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </TblContainer>
-        <TblPagination />
-      </Paper>
+            </TableBody>
+          </TblContainer>
+          <TblPagination />
+        </Paper>
+      ) : (
+        <InventoryTbl data={data} inventory={inventory} />
+      )}
     </>
   );
 }

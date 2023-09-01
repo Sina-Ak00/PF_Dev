@@ -31,6 +31,9 @@ import {
   Search,
 } from "@mui/icons-material";
 import { Link } from "react-router-dom";
+import { DragDropContext } from "react-beautiful-dnd";
+import { StrictModeDroppable as Droppable } from "../controls/DndSettings/StrictModeDroppable";
+import { Draggable } from "react-beautiful-dnd";
 
 const useStyles = makeStyles((theme) => ({
   pageContent: {
@@ -81,6 +84,25 @@ const FoodTable = (props) => {
 
   useEffect(() => {
     if (data) setRecords(data);
+
+    const arrayIdsOrder = JSON.parse(localStorage.getItem("taskOrder"));
+
+    if (!arrayIdsOrder && data?.length) {
+      const idsOrderArray = data.map((task) => task.id);
+      localStorage.setItem("taskOrder", JSON.stringify(idsOrderArray));
+    }
+    let myArray;
+    if (arrayIdsOrder?.length && data?.length) {
+      myArray = arrayIdsOrder.map((pos) => {
+        return data.find((el) => el.id === pos);
+      });
+      const newItems = data.filter((el) => {
+        return !arrayIdsOrder.includes(el.id);
+      });
+      if (newItems?.length) myArray = [...newItems, ...myArray];
+    }
+
+    if(data) setRecords(myArray || data);
   }, [data]);
 
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
@@ -93,6 +115,21 @@ const FoodTable = (props) => {
         else return items.filter((x) => x.FName.includes(e.target.value));
       },
     });
+  };
+
+  const handleOnDragEnd = (result) => {
+    if (!result?.destination) return;
+
+    const tasks = [...records];
+
+    const [reorderedItem] = tasks.splice(result.source.index, 1);
+
+    tasks.splice(result.destination.index, 0, reorderedItem);
+
+    const idsOrderArray = tasks.map((task) => task.id);
+    localStorage.setItem("taskOrder", JSON.stringify(idsOrderArray));
+
+    setRecords(tasks);
   };
 
   const addOrEdit = (food, resetForm) => {
@@ -172,70 +209,91 @@ const FoodTable = (props) => {
         </Toolbar>
         <TblContainer>
           <TblHead />
-          <TableBody>
-            {recordsAfterPagingAndSorting().map((item) => (
-              <TableRow key={item.id}>
-                <TableCell className={classes.tableCell}>
-                  {item.FName}
-                </TableCell>
-                <TableCell className={classes.tableCell}>
-                  {item.FPrice}
-                </TableCell>
-                <TableCell className={classes.tableCell}>
-                  {item.FImage ? (
-                    <img
-                      src={item.FImage}
-                      alt={item.id}
-                      loading="lazy"
-                      style={{
-                        objectFit: "containt",
-                        height: "auto",
-                        maxHeight: "100px",
-                        width: "auto",
-                        maxWidth: "150px",
-                      }}
-                    />
-                  ) : (
-                    <ImageNotSupported />
-                  )}
-                </TableCell>
-                <TableCell className={classes.tableCell}>
-                  {item.FType && (
-                    <Chip
-                      label={item.FType}
-                      color="primary"
-                      variant="outlined"
-                    />
-                  )}
-                </TableCell>
-                <TableCell className={classes.tableCell} width={100}>
-                  <Button
-                    color="primary"
-                    onClick={() => {
-                      openInPopup(item);
-                    }}
-                  >
-                    <EditOutlined fontSize="Small" />
-                  </Button>
-                  <Button
-                    color="secondary"
-                    onClick={() => {
-                      setConfirmDialog({
-                        isOpen: true,
-                        title: "آیا از حذف این رکورد مطمعن هستید؟",
-                        subTitle: "دیگر امکان برگرداندن رکورد نخواهد بود",
-                        onConfirm: () => {
-                          onDelete(item.id);
-                        },
-                      });
-                    }}
-                  >
-                    <CloseOutlined fontSize="Small" />
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
+          <DragDropContext onDragEnd={handleOnDragEnd}>
+            <Droppable droppableId="DpFood">
+              {(provided) => (
+                <TableBody {...provided.droppableProps} ref={provided.innerRef}>
+                  {recordsAfterPagingAndSorting().map((item, index) => (
+                    <Draggable
+                      key={item.id}
+                      draggableId={item.id.toString()}
+                      index={index}
+                    >
+                      {(provided) => (
+                        <TableRow
+                          key={item.id}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          ref={provided.innerRef}
+                        >
+                          <TableCell className={classes.tableCell}>
+                            {item.FName}
+                          </TableCell>
+                          <TableCell className={classes.tableCell}>
+                            {item.FPrice}
+                          </TableCell>
+                          <TableCell className={classes.tableCell}>
+                            {item.FImage ? (
+                              <img
+                                src={item.FImage}
+                                alt={item.id}
+                                loading="lazy"
+                                style={{
+                                  objectFit: "containt",
+                                  height: "auto",
+                                  maxHeight: "100px",
+                                  width: "auto",
+                                  maxWidth: "150px",
+                                }}
+                              />
+                            ) : (
+                              <ImageNotSupported />
+                            )}
+                          </TableCell>
+                          <TableCell className={classes.tableCell}>
+                            {item.FType && (
+                              <Chip
+                                label={item.FType}
+                                color="primary"
+                                variant="outlined"
+                              />
+                            )}
+                          </TableCell>
+                          <TableCell className={classes.tableCell} width={100}>
+                            <Button
+                              color="primary"
+                              onClick={() => {
+                                openInPopup(item);
+                              }}
+                            >
+                              <EditOutlined fontSize="Small" />
+                            </Button>
+                            <Button
+                              color="secondary"
+                              onClick={() => {
+                                setConfirmDialog({
+                                  isOpen: true,
+                                  title: "آیا از حذف این رکورد مطمعن هستید؟",
+                                  subTitle:
+                                    "دیگر امکان برگرداندن رکورد نخواهد بود",
+                                  onConfirm: () => {
+                                    onDelete(item.id);
+                                  },
+                                });
+                              }}
+                            >
+                              <CloseOutlined fontSize="Small" />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </TableBody>
+              )}
+            </Droppable>
+          </DragDropContext>
         </TblContainer>
         <TblPagination />
       </div>
