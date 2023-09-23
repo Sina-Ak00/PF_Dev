@@ -1,5 +1,5 @@
 import React from "react";
-import { Chip, TableCell, TableRow, Tooltip } from "@mui/material";
+import { Chip, TableBody, TableCell, TableRow, Tooltip } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -33,14 +33,14 @@ export const InventoryRow = (props) => {
   return (
     <>
       {props.isOpen === true &&
-        props.foods?.map((f) => (
+        props.foods?.map((f,index) => (
           <TableRow
-            key={f.id}
+            key={index}
             className={classes.tableRow}
             sx={{ backgroundColor: "#DDDDDD" }}
           >
             <TableCell className={classes.tableCell}>
-              <Tooltip key={f.id} title={Number(f.FPrice) * Number(f.qty)}>
+              <Tooltip title={Number(f.FPrice) * Number(f.qty)}>
                 <Chip
                   label={f.FName + "(" + f.qty + ")"}
                   style={{ marginRight: "5px", direction: "rtl" }}

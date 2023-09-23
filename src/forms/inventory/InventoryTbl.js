@@ -70,8 +70,8 @@ export const InventoryTbl = (props) => {
       <TblContainer m={5} id="table-to-xls">
         <TblHead />
 
-        {recordsAfterPagingAndSorting()?.map((item) => (
-          <InventorySection key={item.id} item={props.data} inventory={item} expand={expand} />
+        {recordsAfterPagingAndSorting()?.map((item,index) => (
+          <InventorySection key={index} item={props.data} inventory={item} expand={expand} />
         ))}
       </TblContainer>
     </Paper>

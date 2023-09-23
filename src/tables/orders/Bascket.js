@@ -31,6 +31,7 @@ export default function Bascket(props) {
       foods: cartItem,
       totalPrice: totalPrice,
       Date: moment().format("jYYYY/jM/jD HH:mm"),
+      Address:address,
     };
     createTotal(data);
     // TotalServices.insertTotal(data);

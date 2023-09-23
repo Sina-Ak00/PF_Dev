@@ -17,9 +17,8 @@ export const InventorySection = (props) => {
         gramTotal += Number(item.qty * item.FInvValue);
       });
   });
-
   return (
-    <TableBody key={inventory.id}>
+    <TableBody>
       <TableRow>
         <TableCell>
           <IconButton
@@ -31,14 +30,18 @@ export const InventorySection = (props) => {
           </IconButton>
         </TableCell>
         <TableCell>{inventory.IName}</TableCell>
-        <TableCell>{inventory.IValue}</TableCell>
-        <TableCell>{inventory.ITotal} کیلو گرم</TableCell>
+        <TableCell>
+          {Number(inventory.IValue)
+            .toString()
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+        </TableCell>
+        <TableCell>{inventory.ITotal} گرم</TableCell>
       </TableRow>
       {item
         .map((i) => i.foods.filter((i) => i.FInvTitle === inventory.IName))
-        .map((i) => (
+        .map((i,index) => (
           <InventoryRow
-            key={i.id}
+            key={index}
             foods={i}
             invName={inventory.IName}
             isOpen={isOpen}
@@ -50,15 +53,15 @@ export const InventorySection = (props) => {
           borderBottom: "lightblue solid",
         }}
       >
-        <TableCell></TableCell>
-        <TableCell></TableCell>
-        <TableCell>مجموع</TableCell>
-        <TableRow>
-          <TableCell align="left">{gramTotal} گرم</TableCell>
-          <TableCell align="left">
-            {gramTotal / 1000}  کیلو گرم
-          </TableCell>
-        </TableRow>
+        <TableCell colSpan={2}>مجموع</TableCell>
+
+        <TableCell align="left" colSpan={1}>
+          {Number((gramTotal * inventory.IValue) / inventory.ITotal)
+            .toString()
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}{" "}
+          تومان
+        </TableCell>
+        <TableCell align="left" colSpan={3}>{gramTotal} گرم</TableCell>
       </TableRow>
     </TableBody>
   );

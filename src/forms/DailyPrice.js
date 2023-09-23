@@ -44,10 +44,11 @@ const headCells = [
   { id: "foods", label: "سفارش" },
   { id: "totalPrice", label: "قیمت" },
   { id: "Date", label: "تاریخ" },
+  { id: "Actions", label: "آدرس" },
   { id: "Actions", label: "تنظیمات" },
 ];
 
-export default function DailyPrice(props) {
+export default function DailyPrice() {
   const classes = useStyles();
   const { data } = useGetTotalsQuery("totals");
   const { data: inventory } = useGetInventorysQuery("inventorys");
@@ -175,10 +176,15 @@ export default function DailyPrice(props) {
                     ))}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
-                    {Number(item.totalPrice)}
+                    {Number(item.totalPrice)
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
                     {item.Date}
+                  </TableCell>
+                  <TableCell className={classes.tableCell}>
+                    {item.Address}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
                     <Button color="error" onClick={() => onDelete(item.id)}>
@@ -190,10 +196,10 @@ export default function DailyPrice(props) {
               <TableRow>
                 <TableCell>مجموع فروش</TableCell>
                 <TableCell align="left">
-                  {recordsAfterPagingAndSorting().reduce(
-                    (a, item) => (a = a + item.totalPrice),
-                    0
-                  )}
+                  {recordsAfterPagingAndSorting()
+                    .reduce((a, item) => (a = a + item.totalPrice), 0)
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                 </TableCell>
               </TableRow>
             </TableBody>

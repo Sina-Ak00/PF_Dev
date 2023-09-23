@@ -56,7 +56,6 @@ const CreateFood = (props) => {
         ...recordForEdit,
       });
   }, [recordForEdit, setValues]);
-  console.log(values)
   return (
     <Form onSubmit={handleSubmit}>
       <Grid container className={classes.text}>
