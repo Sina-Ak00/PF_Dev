@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@mui/styles";
 import Grid from "@mui/material/Grid";
 
 import TextField from "@mui/material/TextField";
@@ -15,6 +14,8 @@ import {
   useCreateCategoryMutation,
   useDeleteCategoryMutation,
   useUpdateCategoryMutation,
+  useGetFoodsQuery,
+  useUpdateFoodMutation,
 } from "../state/api.js";
 
 import { CloseOutlined, EditOutlined } from "@mui/icons-material";
@@ -24,7 +25,7 @@ import { Paper, TableBody, TableCell, TableRow, Button } from "@mui/material";
 
 const initailValues = {
   id: 0,
-  CName: ""
+  CName: "",
 };
 const headCells = [
   { id: "CName", label: "نام" },
@@ -33,10 +34,12 @@ const headCells = [
 
 const CreateCategory = (props) => {
   const { data } = useGetCategorysQuery();
+  const { data: foods } = useGetFoodsQuery();
   const [records, setRecords] = useState(data || []);
   const [createCategory] = useCreateCategoryMutation();
   const [deleteCategory] = useDeleteCategoryMutation();
   const [updateCategory] = useUpdateCategoryMutation();
+  const [updateFoods] = useUpdateFoodMutation();
   const [filterFn] = useState({
     fn: (item) => {
       return item;
@@ -66,16 +69,28 @@ const CreateCategory = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (values.id === 0) createCategory(values);
-    else updateCategory({ id: values.id, updatedCategory: values });
+    else {
+      updateCategory({ id: values.id, updatedCategory: values });
+      foods.map(
+        (f) =>
+          f.FType === values.CName &&
+          updateFoods({ id: f.id, updatedFood: { ...f, FType: values.CName } })
+      );
+    }
     resetForm();
   };
 
-  const onDelete = (id) => {
+  const onDelete = (id, name) => {
     setConfirmDialog({
       ...confirmDialog,
       isOpen: false,
     });
     deleteCategory(id);
+    foods.map(
+      (f) =>
+        f.FType === name &&
+        updateFoods({ id: f.id, updatedFood: { ...f, FType: "" } })
+    );
     setRecords(data);
     setNotify({
       isOpen: true,
@@ -175,7 +190,7 @@ const CreateCategory = (props) => {
                             title: "آیا از حذف این رکورد مطمعن هستید؟",
                             subTitle: "دیگر امکان برگرداندن رکورد نخواهد بود",
                             onConfirm: () => {
-                              onDelete(item.id);
+                              onDelete(item.id, item.CName);
                             },
                           });
                         }}

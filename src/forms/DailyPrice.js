@@ -44,7 +44,7 @@ const headCells = [
   { id: "foods", label: "سفارش" },
   { id: "totalPrice", label: "قیمت" },
   { id: "Date", label: "تاریخ" },
-  { id: "Actions", label: "آدرس" },
+  { id: "Address", label: "آدرس" },
   { id: "Actions", label: "تنظیمات" },
 ];
 

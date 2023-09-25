@@ -1,5 +1,5 @@
 import React from "react";
-import { Chip, TableBody, TableCell, TableRow, Tooltip } from "@mui/material";
+import { Chip, TableCell, TableRow, Tooltip } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
@@ -21,11 +21,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const headCells = [
-  { id: "null", label: "" },
-  { id: "orderName", label: "کالا در سفارش" },
-  { id: "qty", label: "حجم" },
-];
+// const headCells = [
+//   { id: "null", label: "" },
+//   { id: "orderName", label: "کالا در سفارش" },
+//   { id: "qty", label: "حجم" },
+// ];
 
 export const InventoryRow = (props) => {
   const classes = useStyles();
@@ -33,9 +33,9 @@ export const InventoryRow = (props) => {
   return (
     <>
       {props.isOpen === true &&
-        props.foods?.map((f,index) => (
+        props.foods?.map((f) => (
           <TableRow
-            key={index}
+            key={f.id}
             className={classes.tableRow}
             sx={{ backgroundColor: "#DDDDDD" }}
           >

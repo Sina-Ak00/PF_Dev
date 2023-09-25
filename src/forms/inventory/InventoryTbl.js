@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import useTable from "../../controls/useTable";
 import { Button, InputAdornment, Paper, TextField, Toolbar } from "@mui/material";
 
@@ -16,15 +16,20 @@ const headCells = [
 ];
 
 export const InventoryTbl = (props) => {
-  const [expand,setExpand]=React.useState(false)
+  const [expand,setExpand]=React.useState(false);
+  const [records,setRecords]=React.useState([]||props.inventory);
 
   const [filterFn, setFilterFn] = React.useState({
     fn: (item) => {
       return item;
     },
   });
+  useEffect(() => {
+    if (props.inventory) setRecords(props.inventory);
+  }, [props.inventory]);
+
   const { TblContainer, TblHead, recordsAfterPagingAndSorting } =
-    useTable(props.inventory, headCells, filterFn,setFilterFn);
+    useTable(records, headCells, filterFn,setFilterFn);
 
     const handleSearch = (e) => {
       setFilterFn({
@@ -70,8 +75,8 @@ export const InventoryTbl = (props) => {
       <TblContainer m={5} id="table-to-xls">
         <TblHead />
 
-        {recordsAfterPagingAndSorting()?.map((item,index) => (
-          <InventorySection key={index} item={props.data} inventory={item} expand={expand} />
+        {recordsAfterPagingAndSorting()?.map((item) => (
+          <InventorySection key={item.id} item={props.data} inventory={item} expand={expand} />
         ))}
       </TblContainer>
     </Paper>

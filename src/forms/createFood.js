@@ -105,16 +105,17 @@ const CreateFood = (props) => {
           value={values.FType === undefined ? 7 : values.FType}
           onChange={handleInputChange}
         /> */}
+        
         {category && (
           <CategorySelect
             name="FType"
             label="دسته بندی"
             hich
             options={category}
-            value={values.FType === undefined ? "هیچکدام" : values.FType}
+            value={values.FType=== undefined ? "هیچکدام" : values.FType}
             onChange={handleInputChange}
-          />
-        )}
+            />
+            )}
         <Grid container spacing={3} style={{ maxWidth: "99%" }}>
           <Grid item xs={values.FInvTitle !== "هیچکدام" ? 6 : 12}>
             {inventory && (
