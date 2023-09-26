@@ -42,7 +42,8 @@ const useStyles = makeStyles((theme) => ({
 
 const headCells = [
   { id: "foods", label: "سفارش" },
-  { id: "totalPrice", label: "قیمت" },
+  { id: "totalPrice", label: "قیمت فروش به مشتری" },
+  { id: "MyPrice", label: "هزینه تولید فروشنده" },
   { id: "Date", label: "تاریخ" },
   { id: "Address", label: "آدرس" },
   { id: "Actions", label: "تنظیمات" },
@@ -181,6 +182,11 @@ export default function DailyPrice() {
                       .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
+                    {Number(item.MyPrice)
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                  </TableCell>
+                  <TableCell className={classes.tableCell}>
                     {item.Date}
                   </TableCell>
                   <TableCell className={classes.tableCell}>
@@ -198,6 +204,21 @@ export default function DailyPrice() {
                 <TableCell align="left">
                   {recordsAfterPagingAndSorting()
                     .reduce((a, item) => (a = a + item.totalPrice), 0)
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                </TableCell>
+                <TableCell align="left">
+                  {recordsAfterPagingAndSorting()
+                    .reduce((a, item) => (a = a + item.MyPrice), 0)
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>سود</TableCell>
+                <TableCell align="left">
+                {recordsAfterPagingAndSorting()
+                    .reduce((a, item) => (a = item.totalPrice - item.MyPrice), 0)
                     .toString()
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                 </TableCell>

@@ -17,6 +17,13 @@ export const api = createApi({
       }),
       invalidatesTags: ['Upload'],
     }),
+    deleteUpload: build.mutation({
+      query: (image) => ({
+        url: `/upload/${image}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ['Upload'],
+    }),
     getFoods: build.query({
       query: () => "/foods",
       providesTags: ["Foods"],
@@ -139,4 +146,5 @@ export const {
   useUpdateInventoryMutation,
   useDeleteInventoryMutation,
   useCreateUploadMutation,
+  useDeleteUploadMutation,
 } = api;

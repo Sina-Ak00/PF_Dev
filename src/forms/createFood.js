@@ -19,6 +19,7 @@ const initailValues = {
   id: 0,
   FName: "",
   FPrice: "",
+  FMyPrice: "",
   FImage: null || "",
   FType: "هیچکدام",
   FInvTitle: "هیچکدام",
@@ -75,6 +76,25 @@ const CreateFood = (props) => {
           type="number"
           name="FPrice"
           label="قیمت"
+          style={{ borderRadius: "50", backgroundColor: "white" }}
+          InputProps={{
+            inputMode: "numeric",
+            pattern: "[,]*",
+            inputProps: { min: 0 },
+            endAdornment: (
+              <InputAdornment position="start">تومان</InputAdornment>
+            ),
+          }}
+        />
+        <TextField
+          id="form-texts-toman"
+          variant="outlined"
+          value={values.FMyPrice}
+          onChange={handleInputChange}
+          type="number"
+          name="FMyPrice"
+          label="قیمت تولید"
+          helperText="در صورت خالی گذاشتن این فیلد هزینه تولید و فروش برابر حساب خواهد شد"
           style={{ borderRadius: "50", backgroundColor: "white" }}
           InputProps={{
             inputMode: "numeric",

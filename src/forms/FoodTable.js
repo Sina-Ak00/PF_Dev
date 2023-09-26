@@ -7,6 +7,7 @@ import {
   useCreateFoodMutation,
   useDeleteFoodMutation,
   useUpdateFoodMutation,
+  useDeleteUploadMutation,
 } from "../state/api.js";
 import CreateFood from "./createFood";
 import Popup from "../controls/Popup";
@@ -64,6 +65,7 @@ const FoodTable = (props) => {
   const [records, setRecords] = useState(data || []);
   const [createFood] = useCreateFoodMutation();
   const [deleteFood] = useDeleteFoodMutation();
+  const [deleteUpload] = useDeleteUploadMutation();
   const [updateFood] = useUpdateFoodMutation();
   const [filterFn, setFilterFn] = useState({
     fn: (item) => {
@@ -102,7 +104,7 @@ const FoodTable = (props) => {
       if (newItems?.length) myArray = [...newItems, ...myArray];
     }
 
-    if(data) setRecords(myArray || data);
+    if (data) setRecords(myArray || data);
   }, [data]);
 
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
@@ -154,12 +156,13 @@ const FoodTable = (props) => {
     setOpenPopup(true);
   };
 
-  const onDelete = (id) => {
+  const onDelete = (id, img) => {
     setConfirmDialog({
       ...confirmDialog,
       isOpen: false,
     });
     deleteFood(id);
+    deleteUpload(img);
     setRecords(data);
     setNotify({
       isOpen: true,
@@ -233,7 +236,7 @@ const FoodTable = (props) => {
                             {item.FPrice}
                           </TableCell>
                           <TableCell className={classes.tableCell}>
-                            {item.FImage ? (
+                            {!item.FImage.includes('server') ? (
                               <img
                                 src={item.FImage}
                                 alt={item.id}
@@ -245,9 +248,22 @@ const FoodTable = (props) => {
                                   width: "auto",
                                   maxWidth: "150px",
                                 }}
+                                placeholder={<ImageNotSupported />}
                               />
                             ) : (
-                              <ImageNotSupported />
+                              <img
+                                src={`http://localhost:8000/uploads/${item.FImage}`}
+                                alt={item.id}
+                                loading="lazy"
+                                style={{
+                                  objectFit: "containt",
+                                  height: "auto",
+                                  maxHeight: "100px",
+                                  width: "auto",
+                                  maxWidth: "150px",
+                                }}
+                                placeholder={<ImageNotSupported />}
+                              />
                             )}
                           </TableCell>
                           <TableCell className={classes.tableCell}>
@@ -277,7 +293,7 @@ const FoodTable = (props) => {
                                   subTitle:
                                     "دیگر امکان برگرداندن رکورد نخواهد بود",
                                   onConfirm: () => {
-                                    onDelete(item.id);
+                                    onDelete(item.id, item.FImage);
                                   },
                                 });
                               }}

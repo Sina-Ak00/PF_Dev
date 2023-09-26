@@ -26,19 +26,37 @@ export default function FoodItem(props) {
             onClick={() => onAdd(food)}
           >
             <Grid item>
-              <img
-                src={food.FImage}
-                alt={food.FName}
-                loading="lazy"
-                style={{
-                  objectFit: "containt",
-                  height: "150px",
-                  maxHeight: "150px",
-                  width: "150px",
-                  maxWidth: "200px",
-                  borderRadius: "25px",
-                }}
-              />
+              {!food.FImage.includes("server") ? (
+                <img
+                  src={food.FImage}
+                  alt={food.FName}
+                  loading="lazy"
+                  style={{
+                    objectFit: "containt",
+                    height: "150px",
+                    maxHeight: "150px",
+                    width: "150px",
+                    maxWidth: "200px",
+                    borderRadius: "25px",
+                  }}
+                  placeholder="images/No-Image-Placeholder.png"
+                />
+              ) : (
+                <img
+                  src={`http://localhost:8000/uploads/${food.FImage}`}
+                  alt={food.FName}
+                  loading="lazy"
+                  style={{
+                    objectFit: "containt",
+                    height: "150px",
+                    maxHeight: "150px",
+                    width: "150px",
+                    maxWidth: "200px",
+                    borderRadius: "25px",
+                  }}
+                  placeholder="images/No-Image-Placeholder.png"
+                />
+              )}
             </Grid>
           </Tooltip>
         ) : (
@@ -49,7 +67,7 @@ export default function FoodItem(props) {
           >
             <Grid item>
               <img
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png"
+                src="images/No-Image-Placeholder.png"
                 alt="notImage"
                 loading="lazy"
                 style={{
@@ -66,7 +84,10 @@ export default function FoodItem(props) {
         )}
         <ImageListItemBar
           title={food.FName}
-          subtitle={food.FPrice}
+          subtitle={food.FPrice.toString().replace(
+            /\B(?=(\d{3})+(?!\d))/g,
+            ","
+          )}
           sx={{ borderRadius: "0 0 25px 25px !important" }}
           actionIcon={
             <IconButton
