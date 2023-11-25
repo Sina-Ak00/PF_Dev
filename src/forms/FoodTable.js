@@ -236,7 +236,7 @@ const FoodTable = (props) => {
                             {item.FPrice}
                           </TableCell>
                           <TableCell className={classes.tableCell}>
-                            {!item.FImage.includes('server') ? (
+                            {!item?.FImage?.includes('server') ? (
                               <img
                                 src={item.FImage}
                                 alt={item.id}

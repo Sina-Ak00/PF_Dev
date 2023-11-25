@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Divider, Grid, TextField, Typography } from "@mui/material";
+import { Divider, Grid, TextField, Typography, Button } from "@mui/material";
 import Tags from "./Tags.js";
 import FoodItem from "./FoodItem";
 //import * as Foodservices from "../../services/FoodServices";
 //import { useGetFoodsQuery } from "../../state/api.js";
 import useApi from "../../state/useApi.js";
+import Popup from "../../controls/Popup.js";
+import { useGetTotalsQuery } from "../../state/api.js";
 
 export default function Main(props) {
   const [search, setSearch] = useState("");
@@ -49,6 +51,12 @@ export default function Main(props) {
     }, 500);
   };
 
+  const { data: totals } = useGetTotalsQuery("totals");
+  const [openPopup, setOpenPopup] = useState(false);
+
+  const openInPopup = (item) => {
+    setOpenPopup(true);
+  };
 
   return (
     <Grid container ml={0.5} spacing={1}>
@@ -60,6 +68,59 @@ export default function Main(props) {
         >
           منو
         </Typography>
+        <Grid item>
+          <Button
+            sx={{ margin: "5px 5px 0 5px" }}
+            variant="outlined"
+            color="primary"
+            onClick={() => {
+              openInPopup();
+            }}
+          >
+            صفحه فروش روزانه{" "}
+          </Button>
+          <Popup
+            openPopup={openPopup}
+            setOpenPopup={setOpenPopup}
+            title="فروش امروز"
+          >
+            <Typography
+              variant="h6"
+              style={{ justifyContent: "start" }}
+              margin={5}
+            >
+              از&nbsp;
+              {totals &&
+                totals
+                  ?.slice(0, 1)
+                  .map((m) => <Typography variant="p">{m.Date}</Typography>)}
+              &nbsp; تا &nbsp;
+              {totals?.slice(totals.length - 1, totals.length).map((m) => (
+                <Typography variant="p">{m.Date}</Typography>
+              ))}
+            </Typography>
+            <Typography
+              variant="h8"
+              display="inline"
+              style={{ justifyContent: "start" }}
+              margin={5}
+            >
+              فروش کلی
+            </Typography>
+            <Typography
+              variant="h6"
+              display="inline"
+              style={{ justifyContent: "start" }}
+              margin={5}
+            >
+              {totals &&
+                totals
+                  .reduce((a, item) => (a = a + item.totalPrice), 0)
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+            </Typography>
+          </Popup>
+        </Grid>
       </Grid>
       <Grid item justifyContent="flex-end" xs={6}>
         <TextField

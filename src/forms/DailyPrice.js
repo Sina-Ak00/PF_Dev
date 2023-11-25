@@ -217,8 +217,11 @@ export default function DailyPrice() {
               <TableRow>
                 <TableCell>سود</TableCell>
                 <TableCell align="left">
-                {recordsAfterPagingAndSorting()
-                    .reduce((a, item) => (a = item.totalPrice - item.MyPrice), 0)
+                  {recordsAfterPagingAndSorting()
+                    .reduce(
+                      (a, item) => (a = a + item.totalPrice - item.MyPrice),
+                      0
+                    )
                     .toString()
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                 </TableCell>
