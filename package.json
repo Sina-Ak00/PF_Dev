@@ -2,7 +2,7 @@
   "name": "serverless-database-app",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://Sina-Ak00.github.io/ph_v1.1",
+  
   "dependencies": {
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
