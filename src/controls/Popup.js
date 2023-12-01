@@ -13,14 +13,14 @@ const useStyles = makeStyles((theme) => ({
 export default function Popup(props) {
   const classes = useStyles();
 
-  const { title, children, openPopup, setOpenPopup } = props;
+  const { title, children, openPopup, setOpenPopup,directionTitle } = props;
   return (
     <Dialog
       open={openPopup}
       maxWidth="md"
       classes={{ paper: classes.dialogWrapper }}
     >
-      <DialogTitle>
+      <DialogTitle dir={directionTitle}>
           <div style={{display:"flex"}}>
         <Typography variant="h6" component="div" style={{flexGrow:1}}>
           {title}

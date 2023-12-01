@@ -16,6 +16,8 @@ import FoodItem from "./FoodItem";
 import useApi from "../../state/useApi.js";
 import Popup from "../../controls/Popup.js";
 import { useGetTotalsQuery } from "../../state/api.js";
+import TotalSales from "./ExportExcel/TotalsSales.js";
+
 
 export default function Main(props) {
   const [search, setSearch] = useState("");
@@ -67,6 +69,7 @@ export default function Main(props) {
     setOpenPopup(true);
   };
 
+
   return (
     <Grid container ml={0.5} spacing={1}>
       <Grid item xs={9}>
@@ -81,6 +84,7 @@ export default function Main(props) {
           openPopup={openPopup}
           setOpenPopup={setOpenPopup}
           title="فروش امروز"
+          directionTitle="rtl"
         >
           <Grid container alignContent="center" justifyContent="center">
             <Grid item xs={12} marginBottom={5}>
@@ -114,23 +118,16 @@ export default function Main(props) {
                 style={{ justifyContent: "start" }}
                 margin={5}
               >
-                {totals &&
-                  totals
-                    .reduce((a, item) => (a = a + item.totalPrice), 0)
-                    .toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                {totals
+                  ? totals
+                      .reduce((a, item) => (a = a + item.totalPrice), 0)
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  : 0}
               </Typography>
             </Grid>
             <Grid item xs={12} marginTop={5}>
-              <Button
-                fullWidth
-                sx={{ margin: "5px 5px 0 5px" }}
-                variant="outlined"
-                color="primary"
-                onClick={()=>setOpenPopup(false)}
-              >
-                دانلود خروجی
-              </Button>
+              <TotalSales hidden='none' setOpenPopup={setOpenPopup}/>
             </Grid>
           </Grid>
         </Popup>

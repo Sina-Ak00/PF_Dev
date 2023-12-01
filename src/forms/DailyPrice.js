@@ -119,7 +119,7 @@ export default function DailyPrice() {
         <ToggleButton value={false}>جدول انبار مصرفی</ToggleButton>
       </ToggleButtonGroup>
       {table === true ? (
-        <Paper sx={{ margin: "5rem" }}>
+        <Paper sx={{ margin: "5rem"}}>
           <Toolbar>
             <TextField
               style={{ direction: "rtl" }}
@@ -234,5 +234,6 @@ export default function DailyPrice() {
         <InventoryTbl data={data} inventory={inventory} />
       )}
     </>
+    
   );
 }

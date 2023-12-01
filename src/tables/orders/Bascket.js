@@ -22,6 +22,11 @@ export default function Bascket(props) {
   const [address, setAddress] = useState("");
   const itemsPrice = cartItem.reduce((a, c) => a + c.FPrice * c.qty, 0);
   const MyFPrice = cartItem.reduce((a, c) => a + c.FMyPrice * c.qty, 0);
+  const filteredCartItems = cartItem.map((cartItem) => ({
+    id: cartItem.id,
+    FName: cartItem.FName,
+    qty: cartItem.qty,
+  }));
   // const taxPrice = itemsPrice * 0.09;
   // const shippingPrice = itemsPrice > 2000 ? 0 : 50;
   const totalPrice = itemsPrice;
@@ -29,7 +34,7 @@ export default function Bascket(props) {
     setTurn(Number(turn) + Number(1));
     const data = {
       id: 0,
-      foods: cartItem,
+      foods: filteredCartItems,
       totalPrice: totalPrice,
       MyPrice: MyFPrice,
       Date: moment().format("jYYYY/jM/jD HH:mm"),
