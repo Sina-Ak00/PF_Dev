@@ -18,7 +18,6 @@ import Popup from "../../controls/Popup.js";
 import { useGetTotalsQuery } from "../../state/api.js";
 import TotalSales from "./ExportExcel/TotalsSales.js";
 
-
 export default function Main(props) {
   const [search, setSearch] = useState("");
   const [typeTag, setTypeTag] = useState(null);
@@ -68,7 +67,6 @@ export default function Main(props) {
   const openInPopup = (item) => {
     setOpenPopup(true);
   };
-
 
   return (
     <Grid container ml={0.5} spacing={1}>
@@ -127,7 +125,7 @@ export default function Main(props) {
               </Typography>
             </Grid>
             <Grid item xs={12} marginTop={5}>
-              <TotalSales hidden='none' setOpenPopup={setOpenPopup}/>
+              <TotalSales hidden="none" setOpenPopup={setOpenPopup} />
             </Grid>
           </Grid>
         </Popup>
@@ -143,6 +141,38 @@ export default function Main(props) {
             value={search}
             onChange={(e) => debouncedFilter(e.target.value)}
           />
+          
+          {/* {menus && (
+            <Autocomplete
+              options={menus}
+              sx={{ width: 242 }}
+              getOptionLabel={(option) => option.FName}
+              renderOption={(option) => (
+                <div
+                  key={option.id}
+                  style={{ cursor: "pointer" }}
+                  title={option?.FName}
+                  onClick={() => onAdd(option)}
+                >
+                  <Box display="flex" alignItems="center">
+                    <img
+                      src={option.FImage}
+                      alt={option.FName}
+                      width={50}
+                      height={50}
+                    />
+                    <Typography ml={2}>{option.FName}</Typography>
+                  </Box>
+                </div>
+              )}
+              onChange={(event, newValue) => {
+                // Display the card with selected food information
+              }}
+              renderInput={(params) => (
+                <TextField {...params} label="جستجو" variant="outlined" />
+              )}
+            />
+          )} */}
         </Grid>
         <Grid item justifyContent="flex-end">
           <Button

@@ -19,17 +19,17 @@ export default function FoodItem(props) {
       }}
     >
       <ImageListItem>
-        {food.FImage ? (
+        {food?.FImage ? (
           <Tooltip
             style={{ cursor: "pointer" }}
-            title={food.FName}
+            title={food?.FName}
             onClick={() => onAdd(food)}
           >
             <Grid item>
-              {!food.FImage.includes("server") ? (
+              {!food?.FImage.includes("server") ? (
                 <img
-                  src={food.FImage}
-                  alt={food.FName}
+                  src={food?.FImage}
+                  alt={food?.FName}
                   loading="lazy"
                   style={{
                     objectFit: "containt",
@@ -43,8 +43,8 @@ export default function FoodItem(props) {
                 />
               ) : (
                 <img
-                  src={`http://localhost:8000/uploads/${food.FImage}`}
-                  alt={food.FName}
+                  src={`http://localhost:8000/uploads/${food?.FImage}`}
+                  alt={food?.FName}
                   loading="lazy"
                   style={{
                     objectFit: "containt",
@@ -62,7 +62,7 @@ export default function FoodItem(props) {
         ) : (
           <Tooltip
             style={{ cursor: "pointer" }}
-            title={food.FName}
+            title={food?.FName}
             onClick={() => onAdd(food)}
           >
             <Grid item>
@@ -83,8 +83,8 @@ export default function FoodItem(props) {
           </Tooltip>
         )}
         <ImageListItemBar
-          title={food.FName}
-          subtitle={food.FPrice.toString().replace(
+          title={food?.FName}
+          subtitle={food?.FPrice.toString().replace(
             /\B(?=(\d{3})+(?!\d))/g,
             ","
           )}
@@ -92,7 +92,7 @@ export default function FoodItem(props) {
           actionIcon={
             <IconButton
               sx={{ color: "rgba(255, 255, 255, 0.54)" }}
-              aria-label={`info about ${food.FPrice}`}
+              aria-label={`info about ${food?.FPrice}`}
               onClick={() => onAdd(food)}
             >
               <ShoppingCart />
