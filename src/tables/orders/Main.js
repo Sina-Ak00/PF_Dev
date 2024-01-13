@@ -8,6 +8,8 @@ import {
   Stepper,
   Step,
   StepLabel,
+  Autocomplete,
+  Box,
 } from "@mui/material";
 import Tags from "./Tags.js";
 import FoodItem from "./FoodItem";
@@ -132,7 +134,7 @@ export default function Main(props) {
       </Grid>
       <Grid item rowSpacing={2} xs={3}>
         <Grid item>
-          <TextField
+          {/* <TextField
             id="form-texts"
             variant="outlined"
             label="جستجو"
@@ -140,39 +142,61 @@ export default function Main(props) {
             autoComplete="off"
             value={search}
             onChange={(e) => debouncedFilter(e.target.value)}
-          />
-          
-          {/* {menus && (
+          /> */}
+          {menus && (
             <Autocomplete
-              options={menus}
+              multiple
               sx={{ width: 242 }}
+              options={menus}
               getOptionLabel={(option) => option.FName}
-              renderOption={(option) => (
+              renderOption={(props, option) => (
+                // <FoodItem
+                //   key={option.id}
+                //   food={option}
+                //   onAdd={onAdd}
+                // ></FoodItem>
                 <div
                   key={option.id}
                   style={{ cursor: "pointer" }}
                   title={option?.FName}
                   onClick={() => onAdd(option)}
                 >
-                  <Box display="flex" alignItems="center">
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    sx={{ marginBottom: 1,'&:hover': { // Target the option element on hover
+                      backgroundColor: 'lightgray', // Example hover effect
+                      cursor: 'pointer',
+                    }, }}
+                  >
                     <img
                       src={option.FImage}
                       alt={option.FName}
                       width={50}
                       height={50}
                     />
-                    <Typography ml={2}>{option.FName}</Typography>
+                    <Box sx={{ display: "flex", alignItems: "flex-start"}}>
+                      <Grid container direction="column" spacing={2}>
+                        <Grid item>
+                          <Typography variant="body1" ml={2}>
+                            {option.FName}
+                          </Typography>
+                        </Grid>
+                        <Grid item>
+                          <Typography variant="caption" ml={2}>
+                            {option.FPrice}
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                    </Box>
                   </Box>
                 </div>
               )}
-              onChange={(event, newValue) => {
-                // Display the card with selected food information
-              }}
               renderInput={(params) => (
                 <TextField {...params} label="جستجو" variant="outlined" />
               )}
             />
-          )} */}
+          )}
         </Grid>
         <Grid item justifyContent="flex-end">
           <Button
