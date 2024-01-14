@@ -143,60 +143,65 @@ export default function Main(props) {
             value={search}
             onChange={(e) => debouncedFilter(e.target.value)}
           /> */}
-          {menus && (
-            <Autocomplete
-              multiple
-              sx={{ width: 242 }}
-              options={menus}
-              getOptionLabel={(option) => option.FName}
-              renderOption={(props, option) => (
-                // <FoodItem
-                //   key={option.id}
-                //   food={option}
-                //   onAdd={onAdd}
-                // ></FoodItem>
-                <div
-                  key={option.id}
-                  style={{ cursor: "pointer" }}
-                  title={option?.FName}
-                  onClick={() => onAdd(option)}
+
+          <Autocomplete
+            multiple
+            loading={!menus ? true : false}
+            sx={{ width: 242 }}
+            options={menus || []}
+            noOptionsText="آیتم مورد نظر در لیست وجود ندارد"
+            getOptionLabel={(option) => option.FName}
+            renderOption={(props, option) => (
+              // <FoodItem
+              //   key={option.id}
+              //   food={option}
+              //   onAdd={onAdd}
+              // ></FoodItem>
+              <div
+                key={option.id}
+                style={{ cursor: "pointer" }}
+                title={option?.FName}
+                onClick={() => onAdd(option)}
+              >
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  sx={{
+                    marginBottom: 1,
+                    "&:hover": {
+                      // Target the option element on hover
+                      backgroundColor: "lightgray", // Example hover effect
+                      cursor: "pointer",
+                    },
+                  }}
                 >
-                  <Box
-                    display="flex"
-                    alignItems="center"
-                    sx={{ marginBottom: 1,'&:hover': { // Target the option element on hover
-                      backgroundColor: 'lightgray', // Example hover effect
-                      cursor: 'pointer',
-                    }, }}
-                  >
-                    <img
-                      src={option.FImage}
-                      alt={option.FName}
-                      width={50}
-                      height={50}
-                    />
-                    <Box sx={{ display: "flex", alignItems: "flex-start"}}>
-                      <Grid container direction="column" spacing={2}>
-                        <Grid item>
-                          <Typography variant="body1" ml={2}>
-                            {option.FName}
-                          </Typography>
-                        </Grid>
-                        <Grid item>
-                          <Typography variant="caption" ml={2}>
-                            {option.FPrice}
-                          </Typography>
-                        </Grid>
+                  <img
+                    src={option.FImage}
+                    alt={option.FName}
+                    width={50}
+                    height={50}
+                  />
+                  <Box sx={{ display: "flex", alignItems: "flex-start" }}>
+                    <Grid container direction="column" spacing={2}>
+                      <Grid item>
+                        <Typography variant="body1" ml={2}>
+                          {option.FName}
+                        </Typography>
                       </Grid>
-                    </Box>
+                      <Grid item>
+                        <Typography variant="caption" ml={2}>
+                          {option.FPrice}
+                        </Typography>
+                      </Grid>
+                    </Grid>
                   </Box>
-                </div>
-              )}
-              renderInput={(params) => (
-                <TextField {...params} label="جستجو" variant="outlined" />
-              )}
-            />
-          )}
+                </Box>
+              </div>
+            )}
+            renderInput={(params) => (
+              <TextField {...params} label="جستجو" variant="outlined" />
+            )}
+          />
         </Grid>
         <Grid item justifyContent="flex-end">
           <Button
