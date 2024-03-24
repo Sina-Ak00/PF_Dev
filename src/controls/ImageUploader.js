@@ -2,19 +2,24 @@ import React, { useState, useRef } from "react";
 import { useCreateUploadMutation } from "../state/api.js";
 import { Button, Grid, Stack } from "@mui/material";
 
+const farsiRegex = /[\u0600-\u06FF]/;
+
 const ImageUploader = (props) => {
-    const {setValues,values}=props;
+  const { setValues, values } = props;
   const inputRef = useRef(null);
   const [createUpload] = useCreateUploadMutation();
   const [selectedImage, setSelectedImage] = useState(null);
 
   const handleUpload = (event) => {
     event.preventDefault();
-
     const formData = new FormData();
-    formData.append("myImage", selectedImage);
-    setValues({...values,FImage:"server"+selectedImage.name})
-    createUpload(formData);
+    if (farsiRegex.test(selectedImage.name)) {
+      alert("لطفا نام تصویر فایل مورد نظر را به نام غیر فارسی تغییر دهید.");
+    } else {
+      formData.append("myImage", selectedImage);
+      setValues({ ...values, FImage: "server_" + selectedImage.name });
+      createUpload(formData);
+    }
   };
 
   return (

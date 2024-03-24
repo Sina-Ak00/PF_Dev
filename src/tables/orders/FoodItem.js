@@ -26,7 +26,7 @@ export default function FoodItem(props) {
             onClick={() => onAdd(food)}
           >
             <Grid item>
-              {!food?.FImage.includes("server") ? (
+              {!food?.FImage?.includes("server") ? (
                 <img
                   src={food?.FImage}
                   alt={food?.FName}
@@ -84,7 +84,7 @@ export default function FoodItem(props) {
         )}
         <ImageListItemBar
           title={food?.FName}
-          subtitle={food?.FPrice.toString().replace(
+          subtitle={food?.FPrice?.toString().replace(
             /\B(?=(\d{3})+(?!\d))/g,
             ","
           )}
