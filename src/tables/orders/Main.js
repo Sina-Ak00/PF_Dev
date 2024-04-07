@@ -162,7 +162,7 @@ export default function Main(props) {
                 style={{ cursor: "pointer" }}
                 title={option?.FName}
                 onClick={() => onAdd(option)}
-              >
+                >
                 <Box
                   display="flex"
                   alignItems="center"
@@ -176,10 +176,11 @@ export default function Main(props) {
                   }}
                 >
                   <img
-                    src={option.FImage}
+                    src={`http://localhost:8000/uploads/${option?.FImage}`}
                     alt={option.FName}
                     width={50}
                     height={50}
+                    placeholder="images/No-Image-Placeholder.png"
                   />
                   <Box sx={{ display: "flex", alignItems: "flex-start" }}>
                     <Grid container direction="column" spacing={2}>

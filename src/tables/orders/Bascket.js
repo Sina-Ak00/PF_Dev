@@ -8,9 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import ImportExportIcon from "@mui/icons-material/ImportExport";
-import {
-  useCreateTotalMutation,
-} from "../../state/api.js";
+import { useCreateTotalMutation } from "../../state/api.js";
 // import * as TotalServices from "../../services/TotalServices";
 import moment from "jalali-moment";
 import Foods from "../menu/Foods";
@@ -38,7 +36,7 @@ export default function Bascket(props) {
       totalPrice: totalPrice,
       MyPrice: MyFPrice,
       Date: moment().format("jYYYY/jM/jD HH:mm"),
-      Address:address,
+      Address: address,
     };
     createTotal(data);
     // TotalServices.insertTotal(data);
@@ -117,34 +115,34 @@ export default function Bascket(props) {
       >
         {cartItem.length !== 0 && (
           <Grid item md={4}>
-          <TextField
-            id="form-texts-toman"
-            variant="outlined"
-            value={turn}
-            onChange={(e) => setTurn(e.target.value)}
-            name="turn"
-            label="نوبت"
-            type="number"
-            inputProps={{ min: 0 }}
-            style={{ borderRadius: "50", backgroundColor: "white" }}
-          />
+            <TextField
+              id="form-texts-toman"
+              variant="outlined"
+              value={turn}
+              onChange={(e) => setTurn(e.target.value)}
+              name="turn"
+              label="نوبت"
+              type="number"
+              inputProps={{ min: 0 }}
+              style={{ borderRadius: "50", backgroundColor: "white" }}
+            />
           </Grid>
         )}
         {cartItem.length !== 0 && (
           <Grid item md={4}>
-          <TextField
-            id="form-texts-toman"
-            variant="outlined"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            name="turn"
-            label="آدرس"
-            multiline
-            type="text"
-            rows={2}
-            inputProps={{ min: 0 }}
-            style={{ borderRadius: "50", backgroundColor: "white" }}
-          />
+            <TextField
+              id="form-texts-toman"
+              variant="outlined"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              name="turn"
+              label="آدرس"
+              multiline
+              type="text"
+              rows={2}
+              inputProps={{ min: 0 }}
+              style={{ borderRadius: "50", backgroundColor: "white" }}
+            />
           </Grid>
         )}
       </Grid>

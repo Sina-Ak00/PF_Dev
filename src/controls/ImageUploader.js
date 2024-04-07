@@ -37,6 +37,7 @@ const ImageUploader = (props) => {
             hidden
             type="file"
             name="myImage"
+            accept="image/*"
             onChange={(event) => {
               setSelectedImage(event.target.files[0]);
             }}

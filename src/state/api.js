@@ -3,27 +3,46 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_BASE_URL }),
   reducerPath: "adminApi",
-  tagTypes: ["Foods", "Totals", "Category","Inventory","Upload"],
+  tagTypes: [
+    "Foods",
+    "Totals",
+    "Category",
+    "Inventory",
+    "Upload",
+    "ExcelUpload",
+  ],
   endpoints: (build) => ({
     // getFoods: build.query({
     //   query: () => "food/allfoods",
     //   providesTags: ["Foods"],
     // }),
+
+    //excel upload
+    createExcelUpload: build.mutation({
+      query: (newExcelUpload) => ({
+        url: "/excelUpload",
+        method: "POST",
+        body: newExcelUpload,
+      }),
+      invalidatesTags: ["ExcelUpload"],
+    }),
+    //image upload
     createUpload: build.mutation({
       query: (newUpload) => ({
         url: "/upload",
         method: "POST",
         body: newUpload,
       }),
-      invalidatesTags: ['Upload'],
+      invalidatesTags: ["Upload"],
     }),
     deleteUpload: build.mutation({
       query: (image) => ({
         url: `/upload/${image}`,
         method: "DELETE",
       }),
-      invalidatesTags: ['Upload'],
+      invalidatesTags: ["Upload"],
     }),
+    //image upload
     getFoods: build.query({
       query: () => "/foods",
       providesTags: ["Foods"],
@@ -34,7 +53,7 @@ export const api = createApi({
         method: "POST",
         body: newFood,
       }),
-      invalidatesTags: ['Foods'],
+      invalidatesTags: ["Foods"],
     }),
     updateFood: build.mutation({
       query: ({ id, updatedFood }) => ({
@@ -42,19 +61,18 @@ export const api = createApi({
         method: "PUT",
         body: updatedFood,
       }),
-      invalidatesTags: ['Foods'],
+      invalidatesTags: ["Foods"],
     }),
     deleteFood: build.mutation({
       query: (id) => ({
         url: `/foods/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ['Foods'],
+      invalidatesTags: ["Foods"],
     }),
     getTotals: build.query({
       query: () => "/totals",
       providesTags: ["Totals"],
-      
     }),
     createTotal: build.mutation({
       query: (newTotal) => ({
@@ -62,14 +80,14 @@ export const api = createApi({
         method: "POST",
         body: newTotal,
       }),
-      invalidatesTags: ['Totals'],
+      invalidatesTags: ["Totals"],
     }),
     deleteTotal: build.mutation({
       query: (id) => ({
         url: `/totals/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ['Totals'],
+      invalidatesTags: ["Totals"],
     }),
     getCategorys: build.query({
       query: () => "/categorys",
@@ -81,7 +99,7 @@ export const api = createApi({
         method: "POST",
         body: newCategory,
       }),
-      invalidatesTags: ['Categorys'],
+      invalidatesTags: ["Categorys"],
     }),
     updateCategory: build.mutation({
       query: ({ id, updatedCategory }) => ({
@@ -89,14 +107,14 @@ export const api = createApi({
         method: "PUT",
         body: updatedCategory,
       }),
-      invalidatesTags: ['Categorys'],
+      invalidatesTags: ["Categorys"],
     }),
     deleteCategory: build.mutation({
       query: (id) => ({
         url: `/categorys/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ['Categorys'],
+      invalidatesTags: ["Categorys"],
     }),
 
     getInventorys: build.query({
@@ -109,7 +127,7 @@ export const api = createApi({
         method: "POST",
         body: newInventory,
       }),
-      invalidatesTags: ['Inventorys'],
+      invalidatesTags: ["Inventorys"],
     }),
     updateInventory: build.mutation({
       query: ({ id, updatedInventory }) => ({
@@ -117,14 +135,14 @@ export const api = createApi({
         method: "PUT",
         body: updatedInventory,
       }),
-      invalidatesTags: ['Inventorys'],
+      invalidatesTags: ["Inventorys"],
     }),
     deleteInventory: build.mutation({
       query: (id) => ({
         url: `/inventorys/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ['Inventorys'],
+      invalidatesTags: ["Inventorys"],
     }),
   }),
 });
@@ -147,4 +165,5 @@ export const {
   useDeleteInventoryMutation,
   useCreateUploadMutation,
   useDeleteUploadMutation,
+  useCreateExcelUploadMutation,
 } = api;

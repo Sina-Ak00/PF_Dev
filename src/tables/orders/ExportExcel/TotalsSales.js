@@ -77,7 +77,7 @@ export default function TotalSales(props) {
   return (
     <>
       <div
-      style={{width:'100%'}}
+        style={{ width: "100%" }}
         onClick={() => {
           props.setOpenPopup(false);
         }}

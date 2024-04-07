@@ -25,7 +25,7 @@ export default function FoodItem(props) {
             title={food?.FName}
             onClick={() => onAdd(food)}
           >
-            <Grid item>
+            <Grid item sx={{ minWidth: 150 }}>
               {!food?.FImage?.includes("server") ? (
                 <img
                   src={food?.FImage}
@@ -40,6 +40,9 @@ export default function FoodItem(props) {
                     borderRadius: "25px",
                   }}
                   placeholder="images/No-Image-Placeholder.png"
+                  onError={(event) => {
+                    event.target.src = "images/No-Image-Placeholder.png";
+                  }}
                 />
               ) : (
                 <img
@@ -55,6 +58,9 @@ export default function FoodItem(props) {
                     borderRadius: "25px",
                   }}
                   placeholder="images/No-Image-Placeholder.png"
+                  onError={(event) => {
+                    event.target.src = "images/No-Image-Placeholder.png";
+                  }}
                 />
               )}
             </Grid>
