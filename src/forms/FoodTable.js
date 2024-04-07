@@ -162,6 +162,15 @@ const FoodTable = (props) => {
       isOpen: false,
     });
     deleteFood(id);
+    try {
+      const arrayIdsOrder = JSON.parse(localStorage.getItem("taskOrder"));
+      const newArrayIdsOrder = arrayIdsOrder.filter(
+        (i) => i !== id
+      );
+      localStorage.setItem("taskOrder", JSON.stringify(newArrayIdsOrder));
+    } catch {
+      console.log("taskOrder Could not be sorted");
+    }
     deleteUpload(img);
     setRecords(data);
     setNotify({
@@ -236,7 +245,7 @@ const FoodTable = (props) => {
                             {item.FPrice}
                           </TableCell>
                           <TableCell className={classes.tableCell}>
-                            {!item?.FImage?.includes('server') ? (
+                            {!item?.FImage?.includes("server") ? (
                               <img
                                 src={item.FImage}
                                 alt={item.id}
