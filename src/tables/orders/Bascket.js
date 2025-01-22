@@ -13,6 +13,12 @@ import { useCreateTotalMutation } from "../../state/api.js";
 import moment from "jalali-moment";
 import Foods from "../menu/Foods";
 
+const addressMap = {
+  2001: "Street 23 Complex 4",
+  3002: "Avenue 45 Complex 8",
+  4003: "Boulevard 12 Complex 6",
+};
+
 export default function Bascket(props) {
   const { anchor, anchorClick, cartItem, onAdd, onRemove, onReset } = props;
   const [createTotal] = useCreateTotalMutation();
@@ -24,6 +30,7 @@ export default function Bascket(props) {
     id: cartItem.id,
     FName: cartItem.FName,
     qty: cartItem.qty,
+    FPrice: cartItem.FPrice,
   }));
   // const taxPrice = itemsPrice * 0.09;
   // const shippingPrice = itemsPrice > 2000 ? 0 : 50;
@@ -134,7 +141,17 @@ export default function Bascket(props) {
               id="form-texts-toman"
               variant="outlined"
               value={address}
-              onChange={(e) => setAddress(e.target.value)}
+              onChange={(e) => {
+                setAddress(e.target.value);
+                const inputValue = e.target.value;
+
+                // Check if the input matches a predefined number
+                if (addressMap[inputValue]) {
+                  setAddress(addressMap[inputValue]); // Update with the corresponding address
+                } else {
+                  setAddress(inputValue); // Keep the typed input
+                }
+              }}
               name="turn"
               label="آدرس"
               multiline

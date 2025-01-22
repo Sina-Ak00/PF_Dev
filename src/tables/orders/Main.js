@@ -23,6 +23,11 @@ import TotalSales from "./ExportExcel/TotalsSales.js";
 export default function Main(props) {
   const [search, setSearch] = useState("");
   const [typeTag, setTypeTag] = useState(null);
+  //auth
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  //end auth
   const { onAdd } = props;
   //const menus = Foodservices.getAllFoods();
   const [data] = useApi("http://localhost:8000/foods", false);
@@ -68,6 +73,19 @@ export default function Main(props) {
 
   const openInPopup = (item) => {
     setOpenPopup(true);
+    setIsAuthenticated(false);
+    setPassword("");
+    setError("");
+  };
+
+  const correctPassword = "1613651";
+  const handlePasswordSubmit = () => {
+    if (password === correctPassword) {
+      setIsAuthenticated(true);
+      setError("");
+    } else {
+      setError("پسورد اشتباه است!");
+    }
   };
 
   return (
@@ -103,31 +121,73 @@ export default function Main(props) {
                 ))}
               </Stepper>
             </Grid>
-            <Grid item>
-              <Typography
-                variant="h8"
-                display="inline"
-                style={{ justifyContent: "start" }}
-                margin={5}
-              >
-                فروش کلی :
-              </Typography>
-              <Typography
-                variant="h6"
-                display="inline"
-                style={{ justifyContent: "start" }}
-                margin={5}
-              >
-                {totals
-                  ? totals
-                      .reduce((a, item) => (a = a + item.totalPrice), 0)
-                      .toString()
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                  : 0}
-              </Typography>
-            </Grid>
+            {!isAuthenticated ? (
+              <>
+                <Typography variant="h6" gutterBottom>
+                  برای مشاهده پسورد را وارد کنید
+                </Typography>
+                <TextField
+                  type="password"
+                  label="پسورد"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  fullWidth
+                  margin="normal"
+                />
+                {error && (
+                  <Typography color="error" variant="body2">
+                    {error}
+                  </Typography>
+                )}
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handlePasswordSubmit}
+                  sx={{ marginTop: 5 }}
+                >
+                  مشاهده
+                </Button>
+                {/* <Button
+                  variant="text"
+                  onClick={handleClosePopup}
+                  sx={{ marginTop: 2 }}
+                  >
+                  Cancel
+                </Button> */}
+              </>
+            ) : (
+              <Grid item>
+                <Typography
+                  variant="h8"
+                  display="inline"
+                  style={{ justifyContent: "start" }}
+                  margin={5}
+                >
+                  فروش کلی :
+                </Typography>
+                <Typography
+                  variant="h6"
+                  display="inline"
+                  style={{ justifyContent: "start" }}
+                  margin={5}
+                >
+                  {totals
+                    ? totals
+                        .reduce((a, item) => (a = a + item.totalPrice), 0)
+                        .toString()
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    : 0}
+                </Typography>
+              </Grid>
+            )}
             <Grid item xs={12} marginTop={5}>
-              <TotalSales hidden="none" setOpenPopup={setOpenPopup} />
+              <TotalSales
+                hidden="none"
+                setOpenPopup={setOpenPopup}
+                setIsAuthenticated={setIsAuthenticated}
+                setPassword={setPassword}
+                setError={setError}
+              />
             </Grid>
           </Grid>
         </Popup>
@@ -162,7 +222,7 @@ export default function Main(props) {
                 style={{ cursor: "pointer" }}
                 title={option?.FName}
                 onClick={() => onAdd(option)}
-                >
+              >
                 <Box
                   display="flex"
                   alignItems="center"

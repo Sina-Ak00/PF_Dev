@@ -17,7 +17,7 @@ export default function Orders(props) {
         )
       );
     } else {
-      setCartItems([...cartItems, { ...food, qty: 1 }]);
+      setCartItems([...cartItems, { ...food, qty: 1, }]);
     }
   };
   const onRemove = (food) => {

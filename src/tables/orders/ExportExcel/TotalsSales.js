@@ -80,6 +80,9 @@ export default function TotalSales(props) {
         style={{ width: "100%" }}
         onClick={() => {
           props.setOpenPopup(false);
+          props.setIsAuthenticated=(false);
+          props.setPassword=("");
+          props.setError=("");
         }}
       >
         <ReactHTMLTableToExcel
@@ -112,7 +115,6 @@ export default function TotalSales(props) {
             حذف رکوردها
           </Button>
         </Toolbar>
-
         <TblContainer id="table-to-xls">
           <TblHead />
           <TableBody>
@@ -121,8 +123,8 @@ export default function TotalSales(props) {
                 <TableCell className={classes.tableCell}>
                   {item.foods?.map((f) => (
                     <Tooltip
-                      key={f.id}
-                      title={Number(f.FPrice) * Number(f.qty)}
+                    key={f.id}
+                    title={Number(f.FPrice) * Number(f.qty)}
                     >
                       <Chip
                         label={f.FName + "(" + f.qty + ")"}

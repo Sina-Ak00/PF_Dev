@@ -166,8 +166,8 @@ export default function DailyPrice() {
                   <TableCell className={classes.tableCell}>
                     {item.foods?.map((f) => (
                       <Tooltip
-                        key={f.id}
-                        title={Number(f.FPrice) * Number(f.qty)}
+                      key={f.id}
+                      title={Number(f.FPrice) * Number(f.qty)}
                       >
                         <Chip
                           label={f.FName + "(" + f.qty + ")"}
