@@ -77,22 +77,34 @@ export default function TotalSales(props) {
   return (
     <>
       <div
-        style={{ width: "100%" }}
+        style={{ width: "100%",display:"grid",gridTemplateColumns:"auto auto" }}
         onClick={() => {
           props.setOpenPopup(false);
-          props.setIsAuthenticated=(false);
-          props.setPassword=("");
-          props.setError=("");
+          props.setIsAuthenticated(false);
+          props.setPassword("");
+          props.setError("");
         }}
       >
-        <ReactHTMLTableToExcel
-          id="test-table-xls-button"
-          className="exportExcelBtn"
-          table="table-to-xls"
-          filename={String(moment().format("jYYYY/jMM/jDD-HH:mm"))}
-          sheet="فروش تا این تاریخ"
-          buttonText="دانلود خروجی"
-        />
+        <div>
+          <ReactHTMLTableToExcel
+            id="test-table-xls-button"
+            className="exportExcelBtn"
+            table="table-to-xls"
+            filename={String(moment().format("jYYYY/jMM/jDD-HH:mm"))}
+            sheet="فروش تا این تاریخ"
+            buttonText="دانلود خروجی"
+          />
+        </div>
+        <div>
+          <Button
+            style={{ margin:"5px 0 0 10px",width:"100%",height:30,fontSize:"0.8125rem",lineHeight:1.75 }}
+            variant="outlined"
+            color="error"
+            onClick={() => onRemoveAll()}
+          >
+            حذف رکوردها
+          </Button>
+        </div>
       </div>
       {/* <ReactHTMLTableToExcel
         style={{ position: "absolute", right: "10px", dir: "rtl" }}
@@ -123,8 +135,8 @@ export default function TotalSales(props) {
                 <TableCell className={classes.tableCell}>
                   {item.foods?.map((f) => (
                     <Tooltip
-                    key={f.id}
-                    title={Number(f.FPrice) * Number(f.qty)}
+                      key={f.id}
+                      title={Number(f.FPrice) * Number(f.qty)}
                     >
                       <Chip
                         label={f.FName + "(" + f.qty + ")"}
