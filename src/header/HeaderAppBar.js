@@ -16,7 +16,7 @@ import { Link } from "react-router-dom";
 const actions = [
   {
     icon: (
-      <IconButton component={Link} to="createFood">
+      <IconButton component={Link} to="/Auth/createFood">
         <RestaurantIcon />
       </IconButton>
     ),
@@ -40,7 +40,7 @@ const actions = [
   },
   {
     icon: (
-      <IconButton component={Link} to="/Auth">
+      <IconButton component={Link} to="/Auth/TotalSell">
         <SellIcon />
       </IconButton>
     ),

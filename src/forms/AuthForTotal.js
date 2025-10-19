@@ -23,7 +23,7 @@ const initailValues = {
   PW: "",
 };
 
-export default function AuthForTotal() {
+export default function AuthForTotal({PageLink}) {
   const classes = useStyles();
   const history = useHistory();
   const [openPopup, setOpenPopup] = useState(true);
@@ -42,7 +42,7 @@ export default function AuthForTotal() {
         message: "دسترسی مجاز",
         type: "success",
       });
-      history.push("/TotalSell");
+      history.push(`/${PageLink}`);
     } else
       setNotify({
         isOpen: true,

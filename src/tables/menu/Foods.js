@@ -83,7 +83,8 @@ const Foods = (props) => {
       />
       <div ref={(el) => (componentRef = el)} className={classes.ticket}>
         {/* <img href="https://www.vecteezy.com/free-vector/potato-logo" alt="Logo" /> */}
-        <p className={classes.centered}>Sandwich Factory</p>
+        {/* Title of recipt */}
+        {/* <p className={classes.centered}>Sandwich Factory</p> */}
         <p className={classes.lefted} style={{ fontSize: "13px" }}>
           {moment().format("jYYYY/jM/jD HH:mm")}
         </p>
@@ -132,9 +133,9 @@ const Foods = (props) => {
         {props.address && <p className={classes.righted}>آدرس:{props.address}</p>}
         <p className={classes.righted}>نوبت شما:{props.turn}</p>
         <p className={classes.centered}>غذای خوب نیاز به تبلیغ ندارد</p>
-        <p className={classes.centered}>
+        {/* <p className={classes.centered}>
           برای انتقادات و پیشنهادات به 09128486406
-        </p>
+        </p> */}
       </div>
     </>
   );

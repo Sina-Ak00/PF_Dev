@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
+import { BrowserRouter as Router, Redirect, Route  } from "react-router-dom";
 
 import Routes from "./routes/routes";
 import Foods from "./tables/menu/Foods";
@@ -35,8 +35,11 @@ function App() {
         <Route path="/bascket" exact>
           <Order menu={Foodservices.getAllFoods()} />
         </Route>
-        <Route path="/Auth" exact>
-          <AuthForTotal />
+        <Route path="/Auth/CreateFood" exact>
+          <AuthForTotal PageLink="CreateFood" />
+        </Route>
+        <Route path="/Auth/TotalSell" exact>
+          <AuthForTotal PageLink="TotalSell" />
         </Route>
         <Route path="/TotalSell" exact>
           <DailyPrice />
